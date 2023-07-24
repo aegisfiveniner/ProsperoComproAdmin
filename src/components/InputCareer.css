@@ -1,0 +1,71 @@
+@import url('https://fonts.cdnfonts.com/css/coolvetica-2');
+
+
+.career-input-field{
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-top: 80px;
+  margin-bottom: 80px;
+    margin-right: 30px;
+  padding-right: 20px;
+  }
+
+  .career-input-field input{
+    border-radius: 5px;
+    background-color: #D9D9D9;
+  }
+
+.career-top-field{
+    display: flex;
+  }
+  .career-top-field input{
+    font-size: 20px;
+  }
+
+  .career-top{
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .career-top-left{
+    margin-right: 20px;
+  }
+
+  .career-top-right{
+    margin-left: 20px;
+  }
+  
+  .career-mid-field{
+      margin-bottom: 20px;
+
+  }
+  .career-mid-field input{
+    font-size: 20px;
+  }
+  .career-bottom-field{
+    margin-bottom: 20px;
+  }
+  .career-bottom-field input{
+    font-size: 20px;
+  }
+
+  .career-input-field h2{
+    padding-bottom: 20px;
+  }
+
+  .career-mid-field textarea{
+    background-color: #D9D9D9;
+    width: 640px;
+    height: 300px;
+    padding: 30px;
+    border-radius: 5px;
+    font-size: 20px;
+    }
+  .career-bottom-field textarea{
+    background-color: #D9D9D9;
+    width: 640px;
+    height: 300px;
+    padding: 30px;
+    border-radius: 5px;
+    font-size: 20px;
+    }

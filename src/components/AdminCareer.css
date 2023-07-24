@@ -1,0 +1,171 @@
+@import url('https://fonts.cdnfonts.com/css/coolvetica-2');
+
+.career-page {
+    /* margin-top: 80px; */
+    height: 98vh;
+    display: flex;
+  }
+
+  .career-sidebar{
+    width: 35%;
+    padding-left: 60px;
+    padding-right: 60px;
+    padding-top: 100px;
+  }
+  
+  .career-sidebar .career-sidebar-content {
+  margin: auto;
+  height: 100%;
+  }
+  .career-sidebar .career-sidebar-content p{
+  font-size: 17px;
+  margin-bottom: 20px;
+  padding-right: 140px;
+  }
+  .career-sidebar .career-sidebar-content button{
+  padding: 10px;
+  border-radius: 5px;
+  width: 60%;
+  border-color: #62A1DB;
+  background-color: white;
+  border-style: solid;
+  }
+  
+
+.career-sidebar-content h2{
+    font-family: 'Coolvetica';
+font-style: italic;
+font-weight: 400;
+font-size: 53px;
+line-height: 64px;
+text-align: left;
+color: #62A1DB;
+margin-bottom: 20px
+;
+}
+
+.career-list{
+    /* height: 100%; */
+    width: 65%;
+    padding-top: 100px;
+    padding-right: 30px;
+  }
+  
+  .career-header {
+    background-color: #D9D9D9;
+    border-radius: 5px;
+padding: 10px;
+text-align: center;
+
+}
+
+.career-header .jobdesc-header{
+width: 30%;
+
+}
+.career-header .start-header{
+width: 25%;
+
+}
+.career-header .expired-header{
+width: 25%;
+
+}
+.career-header .action-header{
+width: 20%;
+
+}
+.career-header ul {
+
+display: flex;
+justify-content: space-around;
+
+}
+
+.career-card {
+  height: 150px;
+  font-family: Helvetica;
+font-size: 20px;
+font-weight: 300;
+line-height: 40px;
+letter-spacing: 0px;
+text-align: left;
+display: flex;
+flex-direction: column;
+margin-bottom: 20px;
+/* padding-top: 20px; */
+
+}
+.career-card li{
+  border-bottom: 2px solid black;
+
+display: flex;
+flex-direction: row;
+height: 100%;
+}
+
+.career-edit{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+
+.career-edit .edit-button{
+background-color: #62A1DB;
+color: white;
+margin-bottom: 10px;
+padding: 10px;
+padding-left: 60px;
+padding-right: 60px;
+width: 100%;
+border-radius: 5px;
+height: 40px;
+}
+.career-edit .delete-button{
+  background-color: #C37474;
+  color: white;
+  padding: 10px;
+width: 60%;
+border-radius: 5px;
+height: 40px;
+
+
+}
+.career-edit button:hover {
+background-color: #548dc2;
+
+}
+.career-edit .delete-button:hover {
+background-color: #a56565;
+
+}
+
+
+.career-jobdesc {
+  width: 30%;
+  display: flex;
+align-items: center;
+justify-content: left;
+font-size: 32px;
+font-weight: 700;
+
+}
+.career-start {
+  width: 25%;
+  display: flex;
+align-items: center;
+justify-content: center;
+}
+.career-expired {
+  width: 25%;
+  display: flex;
+align-items: center;
+justify-content: center;
+}
+.career-edit {
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+}
