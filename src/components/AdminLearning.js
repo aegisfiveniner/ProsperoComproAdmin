@@ -1,69 +1,84 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2"; // Import SweetAlert
 import "./AdminLearning.css";
 
 const LearningPage = () => {
   const cardColors = ["#462200", "#2D354A", "#1F546E", "#3F6490", "#878883"];
 
-  const [resources, setResources] = useState([
-    {
-      id: 1,
-      title:
-        "Learning1 Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
-      date: "6 - 8 December",
-    },
-    {
-      id: 2,
-      title:
-        "Learning2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sit amet semper ex, bibendum aliquam sapien",
-      date: "9 - 10 December",
-    },
-    {
-      id: 3,
-      title:
-        "Learning3 Nunc suscipit quam nunc, a placerat purus posuere eu. Nam eleifend, libero sed gravida aliquam, urna diam interdum dolor",
-      date: "11 - 12 December",
-    },
-    {
-      id: 4,
-      title:
-        "Learning4 Sed eleifend purus eget diam rutrum, pretium lobortis risus laoreet. Praesent quis vulputate diam, sit amet vestibulum neque",
-      date: "13 - 14 December",
-    },
-    {
-      id: 5,
-      title:
-        "Learning5 Nunc auctor enim vel felis consequat pretium. Phasellus porttitor turpis at aliquet lacinia",
-      date: "15 - 16 December",
-    },
-  ]);
-  const [newResource, setNewResource] = useState("");
+  const cardColorLoop = (index) => {
+    if (index > cardColors.length - 1) {
+      return index - cardColors.length;
+    } else {
+      return index;
+    }
+  };
+  const navigate = useNavigate();
+
+  const [resources, setResources] = useState([]);
 
   useEffect(() => {
     fetchLearningResources();
   }, []);
 
+  const token = localStorage.getItem("token");
+
   const fetchLearningResources = () => {
     // Fetch learning resources from the API
-    fetch(`http://localhost:8080/trainings`)
+    fetch(`${process.env.REACT_APP_API_URL}/trainings`, {
+      headers: { Authorization: token },
+    })
       .then((response) => response.json())
       .then((data) => setResources(data));
   };
 
-  const handleAddResource = () => {
-    // Create a new learning resource on the API
-    fetch("https://api.example.com/learning-resources", {
-      method: "POST",
-      body: JSON.stringify({ resource: newResource }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setResources([...resources, data]);
-        setNewResource("");
-      });
+  const handleEditLearning = (learning) => {
+    navigate("/input-learning", { state: { editingLearning: learning } });
+  };
+
+  const handleDeleteLearning = (learningId) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`${process.env.REACT_APP_API_URL}/trainings/${learningId}`, {
+          method: "DELETE",
+          headers: { Authorization: token },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            // If the deletion is successful, update the resources by filtering out the deleted job
+            setResources((prevResources) =>
+              prevResources.filter((job) => job.id !== learningId)
+            );
+            // Show a success popup using SweetAlert
+            Swal.fire("Deleted!", "The learning has been deleted.", "success");
+          })
+          .catch((error) => {
+            console.log("Error deleting job:", error);
+            // Show an error popup using SweetAlert
+            Swal.fire("Error!", "Failed to delete the learning.", "error");
+          });
+      }
+    });
+  };
+
+  const convertDate = (date) => {
+    const options = {
+      // weekday: "long",
+      // year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+    const formattedDate = new Date(date);
+    const localdate = formattedDate.toLocaleDateString("id-ID", options);
+    return localdate;
   };
 
   return (
@@ -76,7 +91,10 @@ const LearningPage = () => {
             Admin
           </h2>
           <p>Pengaturan daftar training learning academy</p>
-          <button>Exit & Save</button>
+          <Link to="/input-learning" className="add-button">
+            Add
+          </Link>
+          <button style={{ display: "none" }}>Exit & Save</button>
         </div>
       </div>
       <div className="learning-list">
@@ -85,34 +103,51 @@ const LearningPage = () => {
             <h2>Thumbnail</h2>
             <h2>Judul Lengkap</h2>
             <h2>Tanggal Training</h2>
+            <h2>Action</h2>
+          </ul>
+        </div>
+        <div>
+          <ul className="card-container">
+            {resources.map((resource, index) => (
+              <div
+                className="learning-card"
+                style={{
+                  backgroundColor: cardColors[cardColorLoop(index)],
+                  listStyleType: "none",
+                }}
+              >
+                <li>
+                  <div className="learning-pic">
+                    <img
+                      src={process.env.REACT_APP_API_URL + "/" + resource.image}
+                    />
+                  </div>
+                  <div className="learning-title">{resource.title}</div>
+                  <div className="learning-date">
+                    {convertDate(resource.startDate)} -{" "}
+                    {convertDate(resource.endDate)}
+                  </div>
+                  <div className="learning-edit">
+                    <button
+                      className="edit-button"
+                      onClick={() => handleEditLearning(resource)}
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      className="delete-button"
+                      onClick={() => handleDeleteLearning(resource.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </li>
+              </div>
+            ))}
           </ul>
         </div>
 
-        <ul>
-          {resources.map((resource, index) => (
-            <div
-              className="learning-card"
-              style={{
-                backgroundColor: cardColors[index],
-                listStyleType: "none",
-              }}
-            >
-              <li key={resource.id}>
-                <div className="learning-pic">
-                  <img src={"http://localhost:8080/" + resource.image} />
-                  {resource.image}
-                </div>
-                <div className="learning-title">{resource.title}</div>
-                <div className="learning-date">{resource.date}</div>
-                <div className="learning-edit">
-                  <Link to="/admin/input-learning">
-                    <button>Edit</button>
-                  </Link>
-                </div>
-              </li>
-            </div>
-          ))}
-        </ul>
         {/* <input
         type="text"
         placeholder="Add a new learning resource"

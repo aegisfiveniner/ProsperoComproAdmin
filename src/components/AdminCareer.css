@@ -29,6 +29,10 @@
   border-color: #62A1DB;
   background-color: white;
   border-style: solid;
+  cursor: pointer;
+  }
+  .career-sidebar .career-sidebar-content button:hover{
+background-color: rgb(196, 195, 195);
   }
   
 
@@ -42,6 +46,12 @@ text-align: left;
 color: #62A1DB;
 margin-bottom: 20px
 ;
+}
+
+.career-sidebar-content .buttons{
+display: flex;
+flex-direction: column;
+
 }
 
 .career-list{
@@ -115,13 +125,28 @@ height: 100%;
 .career-edit .edit-button{
 background-color: #62A1DB;
 color: white;
-margin-bottom: 10px;
 padding: 10px;
-padding-left: 60px;
-padding-right: 60px;
-width: 100%;
+width: 60%;
 border-radius: 5px;
 height: 40px;
+margin-bottom: 10px;
+}
+
+.add-button{
+  height: 40px;
+  padding: 10px;
+  padding-left: 60px;
+padding-right: 60px;
+  border-radius: 5px;
+  width: 60%;
+  border-color: #62A1DB;
+  background-color: #62A1DB;
+  color: white;
+  border-style: solid;
+  display: block;
+  text-align: center;
+  font-size: 13.333px;
+  margin-bottom: 10px;
 }
 .career-edit .delete-button{
   background-color: #C37474;
@@ -135,10 +160,17 @@ height: 40px;
 }
 .career-edit button:hover {
 background-color: #548dc2;
+cursor: pointer;
+
+}
+.add-button:hover {
+background-color: #548dc2;
+cursor: pointer;
 
 }
 .career-edit .delete-button:hover {
 background-color: #a56565;
+cursor: pointer;
 
 }
 

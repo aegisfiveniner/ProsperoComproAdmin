@@ -1,29 +1,80 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2"; // Import SweetAlert
 import "./AdminCareer.css";
 
-const jobs = [
-  {
-    id: 1,
-    description: "Frontend developer",
-    createdDate: "6 December 2022",
-    expiredDate: "6 December 2023",
-  },
-  {
-    id: 2,
-    description: "Backend developer",
-    createdDate: "6 December 2022",
-    expiredDate: "6 December 2023",
-  },
-  {
-    id: 1,
-    description: "Copywriter",
-    createdDate: "6 December 2022",
-    expiredDate: "6 December 2023",
-  },
-];
-
 const AdminCareer = () => {
+  const [resources, setResources] = useState([]);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchJobResources();
+  }, []);
+
+  const token = localStorage.getItem("token");
+
+  const fetchJobResources = () => {
+    // Fetch learning resources from the API
+    fetch(`${process.env.REACT_APP_API_URL}/jobs`, {
+      headers: { Authorization: token },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setResources(data);
+      });
+  };
+
+  const handleEditCareer = (career) => {
+    navigate("/input-career", { state: { editingCareer: career } });
+  };
+
+  const handleDeleteJob = (jobId) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`${process.env.REACT_APP_API_URL}/jobs/${jobId}`, {
+          method: "DELETE",
+          headers: { Authorization: token },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            // If the deletion is successful, update the resources by filtering out the deleted job
+            setResources((prevResources) =>
+              prevResources.filter((job) => job.id !== jobId)
+            );
+            // Show a success popup using SweetAlert
+            Swal.fire("Deleted!", "The job has been deleted.", "success");
+          })
+          .catch((error) => {
+            console.log("Error deleting job:", error);
+            // Show an error popup using SweetAlert
+            Swal.fire("Error!", "Failed to delete the job.", "error");
+          });
+      }
+    });
+  };
+
+  const convertDate = (date) => {
+    const options = {
+      // weekday: "long",
+      // year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+    const formattedDate = new Date(date);
+    const localdate = formattedDate.toLocaleDateString("id-ID", options);
+    return localdate;
+  };
+
   return (
     <div className="career-page">
       <div className="career-sidebar">
@@ -33,9 +84,14 @@ const AdminCareer = () => {
             Admin
           </h2>
           <p>Pengaturan daftar Job Opening Prospero Solutions</p>
-          <Link>
-            <button>Exit & Save</button>
-          </Link>
+          <div className="buttons">
+            <Link to="/input-career" className="add-button">
+              Add
+            </Link>
+            <Link>
+              <button style={{ display: "none" }}>Exit & Save</button>
+            </Link>
+          </div>
         </div>
       </div>
       <div className="career-list">
@@ -48,7 +104,7 @@ const AdminCareer = () => {
           </ul>
         </div>
         <ul>
-          {jobs.map((job) => (
+          {resources.map((job) => (
             <div
               className="career-card"
               style={{
@@ -56,14 +112,23 @@ const AdminCareer = () => {
               }}
             >
               <li key={job.id}>
-                <div className="career-jobdesc">{job.description}</div>
-                <div className="career-start">{job.createdDate}</div>
-                <div className="career-expired">{job.expiredDate}</div>
+                <div className="career-jobdesc">{job.title}</div>
+                <div className="career-start">{convertDate(job.startDate)}</div>
+                <div className="career-expired">{convertDate(job.endDate)}</div>
                 <div className="career-edit">
-                  <Link to="/admin/input-career">
-                    <button className="edit-button">Edit</button>
-                  </Link>
-                  <button className="delete-button">Delete</button>
+                  <button
+                    className="edit-button"
+                    onClick={() => handleEditCareer(job)}
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    className="delete-button"
+                    onClick={() => handleDeleteJob(job.id)}
+                  >
+                    Delete
+                  </button>
                 </div>
               </li>
             </div>

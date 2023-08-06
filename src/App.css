@@ -39,13 +39,19 @@ header .navbar #learning:hover {
     
 }
 
-header .navbar #training:hover {
+header .navbar #archive:hover {
     background-color: transparent;
     cursor: pointer;
     font-weight: 1000;
     
 }
 header .navbar #career a:hover {
+    background-color: transparent;
+    cursor: pointer;
+    font-weight: 1000;
+    
+}
+header .navbar #logout a:hover {
     background-color: transparent;
     cursor: pointer;
     font-weight: 1000;

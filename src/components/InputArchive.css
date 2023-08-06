@@ -180,9 +180,7 @@ font-size: 20px;
   align-content: center;
 }
 .previewImage img{
-
   max-height: 140px;
-  max-width: 140px;
 
 }
 
@@ -191,11 +189,12 @@ font-size: 20px;
   height: 140px;
   width: 138px;
 
+
+
+  
 }
 
-.hidden{
-  display: none;
-}
+
 
 .previewTitle{
   position: absolute;
@@ -203,7 +202,7 @@ font-size: 20px;
   height: 100px;
   left: 10px;
   width: 120px;
-  /* color: white; */
+  color: white;
 
   display: block;/* or inline-block */
   text-overflow: ellipsis;
@@ -226,6 +225,7 @@ width: 120px;
 }
 
 .previewDate{
+  color: white;
   position: absolute;
   z-index: 1000;
 width: 120px;
