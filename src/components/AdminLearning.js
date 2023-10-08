@@ -6,6 +6,8 @@ import "./AdminLearning.css";
 const LearningPage = () => {
   const cardColors = ["#462200", "#2D354A", "#1F546E", "#3F6490", "#878883"];
 
+  const [colors, setColors] = useState([{ id: 0, name: "", hex: "" }]);
+
   const cardColorLoop = (index) => {
     if (index > cardColors.length - 1) {
       return index - cardColors.length;
@@ -69,6 +71,32 @@ const LearningPage = () => {
     });
   };
 
+  const fetchColors = () => {
+    // Fetch learning resources from the API
+    fetch(process.env.REACT_APP_API_URL + "/colors")
+      .then((response) => response.json())
+      .then((data) => {
+        setColors(data);
+        // setSelectedTextColorHex(data[0]?.hex);
+        // setSelectedSchemeColorHex(data[0]?.hex);
+      });
+  };
+
+  useEffect(() => {
+    fetchColors();
+    // console.log(colors);
+  }, []);
+
+  const findHex = (colorId) => {
+    const foundColor = colors.find((color) => colorId === color.id);
+
+    if (foundColor) {
+      return foundColor.hex;
+    } else {
+      return null; // or some default value if colorId is not found
+    }
+  };
+
   const convertDate = (date) => {
     const options = {
       // weekday: "long",
@@ -112,7 +140,7 @@ const LearningPage = () => {
               <div
                 className="learning-card"
                 style={{
-                  backgroundColor: cardColors[cardColorLoop(index)],
+                  backgroundColor: findHex(resource.backgroundColorId),
                   listStyleType: "none",
                 }}
               >
@@ -122,8 +150,16 @@ const LearningPage = () => {
                       src={process.env.REACT_APP_API_URL + "/" + resource.image}
                     />
                   </div>
-                  <div className="learning-title">{resource.title}</div>
-                  <div className="learning-date">
+                  <div
+                    className="learning-title"
+                    style={{ color: findHex(resource.textColorId) }}
+                  >
+                    {resource.title}
+                  </div>
+                  <div
+                    className="learning-date"
+                    style={{ color: findHex(resource.textColorId) }}
+                  >
                     {convertDate(resource.startDate)} -{" "}
                     {convertDate(resource.endDate)}
                   </div>
