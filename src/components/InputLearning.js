@@ -311,7 +311,15 @@ const InputLearningPage = ({ resources, setResources }) => {
                   Select Scheme
                 </option>
                 {colors.map((color) => (
-                  <option key={color.id} value={color.id}>
+                  <option
+                    key={color.id}
+                    value={color.id}
+                    style={{
+                      backgroundColor: color.hex,
+                      width: "50px",
+                      height: "50px",
+                    }}
+                  >
                     {color.hex}
                   </option>
                 ))}
@@ -337,7 +345,15 @@ const InputLearningPage = ({ resources, setResources }) => {
                   Select Color
                 </option>
                 {colors.map((color, index) => (
-                  <option key={color.id} value={color.id}>
+                  <option
+                    key={color.id}
+                    value={color.id}
+                    style={{
+                      backgroundColor: color.hex,
+                      width: "50px",
+                      height: "50px",
+                    }}
+                  >
                     {color.name}
                   </option>
                 ))}
