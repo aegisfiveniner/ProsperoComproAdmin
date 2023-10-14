@@ -69,7 +69,7 @@ const InputCareer = () => {
       method,
       headers: {
         "Content-Type": "application/json",
-        Authorization: `${token} }`,
+        Authorization: token,
       },
       body: JSON.stringify(newResource),
     })
