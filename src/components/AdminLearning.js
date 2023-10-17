@@ -140,7 +140,7 @@ const LearningPage = () => {
               <div
                 className="learning-card"
                 style={{
-                  backgroundColor: findHex(resource.backgroundColorId),
+                  backgroundColor: resource.backgroundColor,
                   listStyleType: "none",
                 }}
               >
@@ -152,13 +152,13 @@ const LearningPage = () => {
                   </div>
                   <div
                     className="learning-title"
-                    style={{ color: findHex(resource.textColorId) }}
+                    style={{ color: resource.textColor }}
                   >
                     {resource.title}
                   </div>
                   <div
                     className="learning-date"
-                    style={{ color: findHex(resource.textColorId) }}
+                    style={{ color: resource.textColor }}
                   >
                     {convertDate(resource.startDate)} -{" "}
                     {convertDate(resource.endDate)}

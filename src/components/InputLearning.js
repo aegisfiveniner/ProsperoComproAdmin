@@ -8,47 +8,35 @@ const InputLearningPage = ({ resources, setResources }) => {
     ? location.state.editingLearning
     : null;
 
-  const [colors, setColors] = useState([
-    {
-      name: "",
-      hex: "",
-    },
-  ]);
+  // const [colors, setColors] = useState([
+  //   {
+  //     name: "",
+  //     hex: "",
+  //   },
+  // ]);
 
-  const fetchColors = () => {
-    // Fetch learning resources from the API
-    fetch(process.env.REACT_APP_API_URL + "/colors")
-      .then((response) => response.json())
-      .then((data) => {
-        setColors(data);
-        // setSelectedTextColorHex(data[0]?.hex);
-        // setSelectedSchemeColorHex(data[0]?.hex);
-      });
-  };
+
+
 
   useEffect(() => {
-    fetchColors();
-  }, []);
+    if (editingLearning ) {
+      // const textColorFound = colors.find(
+      //   (color) => color.id === editingLearning.textColorId
+      // );
+      // if (textColorFound) {
+        setSelectedTextColorHex(editingLearning.textColor);
+        // setSelectedTextColorId(textColorFound.id);
+      // }
 
-  useEffect(() => {
-    if (editingLearning && colors.length > 0) {
-      const textColorFound = colors.find(
-        (color) => color.id === editingLearning.textColorId
-      );
-      if (textColorFound) {
-        setSelectedTextColorHex(textColorFound.hex);
-        setSelectedTextColorId(textColorFound.id);
-      }
-
-      const backgroundColorFound = colors.find(
-        (color) => color.id === editingLearning.backgroundColorId
-      );
-      if (backgroundColorFound) {
-        setSelectedSchemeColorHex(backgroundColorFound.hex);
-        setSelectedSchemeColorId(backgroundColorFound.id);
-      }
+      // const backgroundColorFound = colors.find(
+      //   (color) => color.id === editingLearning.backgroundColorId
+      // );
+      // if (backgroundColorFound) {
+        setSelectedSchemeColorHex(editingLearning.backgroundColor);
+        // setSelectedSchemeColorId(backgroundColorFound.id);
+      // }
     }
-  }, [editingLearning, colors]);
+  }, [editingLearning]);
 
   const [temporaryImageUrl, setTemporaryImageUrl] = useState("");
 
@@ -68,8 +56,8 @@ const InputLearningPage = ({ resources, setResources }) => {
     description: "",
     startDate: null,
     endDate: null,
-    textColorId: null,
-    backgroundColorId: null,
+    textColor: "",
+    backgroundColor: "",
     image: null,
   });
 
@@ -94,8 +82,8 @@ const InputLearningPage = ({ resources, setResources }) => {
         description: editingLearning.description,
         startDate: formattedStartDate,
         endDate: formattedEndDate,
-        textColorId: editingLearning.textColorId,
-        backgroundColorId: editingLearning.backgroundColorId,
+        textColor: editingLearning.textColor,
+        backgroundColor: editingLearning.backgroundColor,
         image: editingLearning.image,
       };
 
@@ -104,7 +92,7 @@ const InputLearningPage = ({ resources, setResources }) => {
   }, [editingLearning]);
 
   const [selectedTextColorHex, setSelectedTextColorHex] = useState("");
-  const [selectedSchemeColorHex, setSelectedSchemeColorHex] = useState("");
+  const [selectedSchemeColorHex, setSelectedSchemeColorHex] = useState("#ffffff");
   const [selectedTextColorId, setSelectedTextColorId] = useState(0);
   const [selectedSchemeColorId, setSelectedSchemeColorId] = useState(0);
 
@@ -118,6 +106,8 @@ const InputLearningPage = ({ resources, setResources }) => {
       // image: selectedFile,
     });
   };
+
+
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -146,8 +136,8 @@ const InputLearningPage = ({ resources, setResources }) => {
     formData.append("title", newResource.title);
     formData.append("shortTitle", newResource.shortTitle);
     formData.append("description", newResource.description);
-    formData.append("textColorId", newResource.textColorId);
-    formData.append("backgroundColorId", newResource.backgroundColorId);
+    formData.append("textColor", newResource.textColor);
+    formData.append("backgroundColor", newResource.backgroundColor);
     formData.append("startDate", newResource.startDate);
     formData.append("endDate", newResource.endDate);
     formData.append("image", newResource.image); // Append the image file to the FormData
@@ -206,34 +196,37 @@ const InputLearningPage = ({ resources, setResources }) => {
   };
 
   const onTextColorChange = (e) => {
-    const selectedColorId = e.target.value;
+    // const selectedColorId = e.target.value;
+    const selectedColor = e.target.value;
 
-    let colorFound = {};
-    colors.find((color) => {
-      if (color.id == selectedColorId) {
-        colorFound = color;
-      }
-    });
-    setSelectedTextColorHex(colorFound.hex);
-    setSelectedTextColorId(colorFound.id);
-    setNewResource({ ...newResource, textColorId: colorFound.id });
+    // let colorFound = {};
+    // colors.find((color) => {
+    //   if (color.id == selectedColorId) {
+    //     colorFound = color;
+    //   }
+    // });
+    setSelectedTextColorHex(selectedColor);
+    // setSelectedTextColorId(colorFound.id);
+    setNewResource({ ...newResource, textColor: selectedColor });
     // console.log("textid", selectedTextColorId);
   };
 
   const onSchemeColorChange = (e) => {
-    const selectedColorId = e.target.value;
-    // console.log("color", selectedColorId);
+    // const selectedColorId = e.target.value;
+    const selectedColor = e.target.value;
+
     let colorFound = {};
-    colors.find((color) => {
-      if (color.id == selectedColorId) {
-        colorFound = color;
-      }
-    });
-    // console.log("found", colorFound.id);
-    setSelectedSchemeColorHex(colorFound.hex);
-    setSelectedSchemeColorId(colorFound.id);
-    setNewResource({ ...newResource, backgroundColorId: colorFound.id });
-    // console.log("result", selectedSchemeColorId);
+    // colors.find((color) => {
+    //   if (color.id == selectedColorId) {
+    //     colorFound = color;
+    //   }
+    // });
+
+    // setSelectedSchemeColorHex(colorFound.hex);
+    setSelectedSchemeColorHex(selectedColor);
+    // setSelectedSchemeColorId(colorFound.id);
+    setNewResource({ ...newResource, backgroundColor: selectedColor });
+
   };
 
   return (
@@ -299,7 +292,7 @@ const InputLearningPage = ({ resources, setResources }) => {
             <div className="bottom-left bottom">
               <h2>Color Scheme</h2>
 
-              <select
+              {/* <select
                 required
                 className="color-code"
                 name="backgroundColorId"
@@ -323,7 +316,15 @@ const InputLearningPage = ({ resources, setResources }) => {
                     {color.hex}
                   </option>
                 ))}
-              </select>
+              </select> */}
+              <input
+        type="text"
+        className="color-code"
+        placeholder="Enter color hex"
+
+        value={selectedSchemeColorHex}
+        onChange={onSchemeColorChange }
+      />
 
               <div
                 className="color-scheme"
@@ -338,13 +339,35 @@ const InputLearningPage = ({ resources, setResources }) => {
                 className="color-name"
                 name="textColorId"
                 onChange={onTextColorChange}
-                value={selectedTextColorId}
+                value={selectedTextColorHex}
                 defaultValue=""
               >
                 <option selected disabled value="">
                   Select Color
                 </option>
-                {colors.map((color, index) => (
+                <option
+
+                    value="#000000"
+                    style={{
+
+                      width: "50px",
+                      height: "50px",
+                    }}
+                  >
+                    Black
+                  </option>
+                <option
+
+                    value="#ffffff"
+                    style={{
+
+                      width: "50px",
+                      height: "50px",
+                    }}
+                  >
+                    White
+                  </option>
+                {/* {colors.map((color, index) => (
                   <option
                     key={color.id}
                     value={color.id}
@@ -356,7 +379,7 @@ const InputLearningPage = ({ resources, setResources }) => {
                   >
                     {color.name}
                   </option>
-                ))}
+                ))} */}
               </select>
 
               <div
