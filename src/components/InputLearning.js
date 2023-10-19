@@ -454,7 +454,7 @@ const InputLearningPage = ({ resources, setResources }) => {
             </div>
           </div>
           <div className="outline-field">
-            <h2>Outline Training</h2>
+            <h2>Objective Training</h2>
             <textarea
               required
               type="text"
