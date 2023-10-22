@@ -79,7 +79,7 @@ const InputLearningPage = ({ resources, setResources }) => {
       const newResObj = {
         title: editingLearning.title,
         shortTitle: editingLearning.shortTitle,
-        description: editingLearning.description,
+        description: editingLearning.description.replace(/ /g, "\u00A0"),
         startDate: formattedStartDate,
         endDate: formattedEndDate,
         textColor: editingLearning.textColor,
@@ -135,7 +135,7 @@ const InputLearningPage = ({ resources, setResources }) => {
     const formData = new FormData();
     formData.append("title", newResource.title);
     formData.append("shortTitle", newResource.shortTitle);
-    formData.append("description", newResource.description);
+    formData.append("description", newResource.description.replace(/ /g, "\u00A0"));
     formData.append("textColor", newResource.textColor);
     formData.append("backgroundColor", newResource.backgroundColor);
     formData.append("startDate", newResource.startDate);
@@ -453,7 +453,7 @@ const InputLearningPage = ({ resources, setResources }) => {
               )}
             </div>
           </div>
-          <div className="outline-field">
+          <div className="outline-field" style={{whiteSpace: "pre"}}>
             <h2>Objective Training</h2>
             <textarea
               required
