@@ -5,29 +5,122 @@ import "./AdminLearning.css";
 
 const LearningPage = () => {
   const cardColors = ["#462200", "#2D354A", "#1F546E", "#3F6490", "#878883"];
+  const [month, setMonth] = useState(null)
+  const [months, setMonths] = useState([
+    {
+    month: "Januari",
+    value: 0
+    },
+    {
+    month: "Februari",
+    value: 1
+    },
+    {
+    month: "Maret",
+    value: 2
+    },
+    {
+    month: "April",
+    value: 3
+    },
+    {
+    month: "Mei",
+    value: 4
+    },
+    {
+    month: "Juni",
+    value: 5
+    },
+    {
+    month: "Juli",
+    value: 6
+    },
+    {
+    month: "Agustus",
+    value: 7
+    },
+    {
+    month: "September",
+    value: 8
+    },
+    {
+    month: "Oktober",
+    value: 9
+    },
+    {
+    month: "November",
+    value: 10
+    },
+    {
+    month: "Desember",
+    value: 11
+    },
+
+])
+
+  const token = localStorage.getItem("token");
+
+  const handleMonthChange = (e) => {
+    const selectedMonthValue = e.target.value;
+        // Do something with the selected month, e.g., update state
+    // setMonth(selectedMonthValue);
+
+    const newMonth = {"month": selectedMonthValue}
+
+
+    const apiUrl = `${process.env.REACT_APP_API_URL}/month`;
+
+    const method = "POST"
+
+
+    fetch(apiUrl, {
+      method,
+
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+
+      body: JSON.stringify(newMonth),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setMonth(data.month);
+      })
+      .catch((error) => {
+        console.log("Error adding resource:", error);
+      });
+  
+  }
+
+
 
   const [colors, setColors] = useState([{ id: 0, name: "", hex: "" }]);
 
-  const cardColorLoop = (index) => {
-    if (index > cardColors.length - 1) {
-      return index - cardColors.length;
-    } else {
-      return index;
-    }
-  };
+
   const navigate = useNavigate();
 
   const [resources, setResources] = useState([]);
 
   useEffect(() => {
-    fetchLearningResources();
-  }, []);
+    fetchLearningResources(month);
+    fetchSelectedMonth()
+  }, [month]);
 
-  const token = localStorage.getItem("token");
 
-  const fetchLearningResources = () => {
+
+  const fetchSelectedMonth = () => {
+
     // Fetch learning resources from the API
-    fetch(`${process.env.REACT_APP_API_URL}/trainings`, {
+    fetch(`${process.env.REACT_APP_API_URL}/pub/month`)
+      .then((response) => response.json())
+      .then((data) => setMonth(data.month));
+  };
+
+  const fetchLearningResources = (month) => {
+
+    // Fetch learning resources from the API
+    fetch(`${process.env.REACT_APP_API_URL}/trainings?month=${month}`, {
       headers: { Authorization: token },
     })
       .then((response) => response.json())
@@ -126,6 +219,15 @@ const LearningPage = () => {
         </div>
       </div>
       <div className="learning-list">
+      <div className="month-header"><p>
+        Bulan Training :
+        </p>
+        <select className="month-selection" onChange={handleMonthChange} value={month}>
+{months.map((m) => 
+  (<option key={m.value} value={m.value}>{m.month}</option>)
+)}
+          </select>
+      </div>
         <div className="learning-header">
           <ul>
             <h2>Thumbnail</h2>
