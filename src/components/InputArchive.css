@@ -155,14 +155,14 @@ position: relative;
 margin-right: 20px;
 }
 
-.outline-field textarea{
+/* .outline-field textarea{
 background-color: #D9D9D9;
 width: 640px;
 height: 300px;
 padding: 30px;
 border-radius: 5px;
 font-size: 20px;
-}
+} */
 
 .input-field h2{
   padding-bottom: 20px;
